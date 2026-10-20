@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}Admin dashboard{% endblock %}
+{% block content %}
+<div class="page-heading"><span class="eyebrow">QUICKBITE CONTROL ROOM</span><h1>Admin dashboard</h1><p>Update order progress for this local demo.</p></div>
+{% if orders %}<div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Order</th><th>Customer</th><th>Total</th><th>Current status</th><th>Update</th></tr></thead><tbody>{% for order in orders %}<tr><td>#{{ order.id }}</td><td>{{ order.customer_name }}<br><span class="muted small">{{ order.address }}</span></td><td>₹{{ order.total }}</td><td>{{ stages[order.status_index] }}</td><td><form class="admin-update" method="post" action="{{ url_for('admin_update_status', order_id=order.id) }}"><select name="status_index">{% for stage in stages %}<option value="{{ loop.index0 }}" {% if loop.index0 == order.status_index %}selected{% endif %}>{{ stage }}</option>{% endfor %}</select><button class="btn btn-small" type="submit">Save</button></form></td></tr>{% endfor %}</tbody></table></div>{% else %}<div class="empty-state"><h2>No orders yet</h2><p>Orders will appear here after a customer checks out.</p></div>{% endif %}
+<div class="notice"><strong>Demo admin account</strong><br>Email: admin@quickbite.local · Password: Admin123!<br>Change this account before any public deployment.</div>
+{% endblock %}

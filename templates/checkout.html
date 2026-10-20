@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Checkout{% endblock %}
+{% block content %}
+<div class="page-heading"><span class="eyebrow">ALMOST THERE</span><h1>Checkout</h1><p>Where should we deliver your order?</p></div>
+<div class="checkout-layout">
+<section class="panel"><form method="post" class="stack-form"><label>Delivery address<textarea name="address" rows="4" minlength="10" required placeholder="House/flat, street, area, city, PIN code"></textarea></label><fieldset><legend>Payment method</legend><label class="radio-option"><input type="radio" name="payment_method" value="cod" checked> Cash on delivery <span class="muted">Pay when your order arrives</span></label><label class="radio-option"><input type="radio" name="payment_method" value="demo"> Simulated test payment <span class="muted">Demo only — no money is charged</span></label></fieldset><button class="btn full" type="submit">Place order · ₹{{ total }}</button></form></section>
+<aside class="panel summary"><h2>Order summary</h2>{% for line in lines %}<div class="bill-row"><span>{{ line.item.name }} × {{ line.qty }}</span><span>₹{{ line.line_total }}</span></div>{% endfor %}<div class="bill-row"><span>Delivery fee</span><span>₹{{ delivery_fee }}</span></div><div class="bill-row bill-total"><span>Total</span><span>₹{{ total }}</span></div><p class="small muted">The demo payment option does not process a real payment. A production payment gateway must verify payment on the server.</p></aside>
+</div>
+{% endblock %}

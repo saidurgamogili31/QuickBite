@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Your cart{% endblock %}
+{% block content %}
+<div class="page-heading"><span class="eyebrow">ONE LAST LOOK</span><h1>Your cart</h1><p>Make sure everything looks delicious.</p></div>
+{% if lines %}
+<div class="checkout-layout">
+  <section class="panel">
+    <form action="{{ url_for('update_cart') }}" method="post">
+    {% for line in lines %}
+    <div class="cart-line">
+      <div class="food-symbol {% if line.item.veg %}veg{% else %}nonveg{% endif %}"><span></span></div>
+      <div class="cart-item-copy"><h3>{{ line.item.name }}</h3><p>{{ line.restaurant.name }} · ₹{{ line.item.price }} each</p></div>
+      <label class="qty-label">Qty <input type="number" name="qty_{{ line.item.id }}" value="{{ line.qty }}" min="0" max="20"></label>
+      <strong>₹{{ line.line_total }}</strong>
+    </div>
+    {% endfor %}
+    <button class="btn btn-outline" type="submit">Update cart</button>
+    <p class="muted small">Set quantity to 0 to remove an item.</p>
+    </form>
+  </section>
+  <aside class="panel summary"><h2>Bill details</h2><div class="bill-row"><span>Item total</span><span>₹{{ subtotal }}</span></div><div class="bill-row"><span>Delivery fee</span><span>₹{{ delivery_fee }}</span></div><div class="bill-row bill-total"><span>Total</span><span>₹{{ total }}</span></div><a class="btn full" href="{{ url_for('checkout') }}">Continue to checkout</a><p class="small muted">Taxes and fees are illustrative for this demo.</p></aside>
+</div>
+{% else %}
+<div class="empty-state"><div class="empty-icon">🛍️</div><h2>Your cart is taking a break</h2><p>Add a dish from one of our restaurants to get started.</p><a class="btn" href="{{ url_for('index') }}">Explore restaurants</a></div>
+{% endif %}
+{% endblock %}

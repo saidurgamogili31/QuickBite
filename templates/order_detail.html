@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Order #{{ order.id }}{% endblock %}
+{% block content %}
+<a class="back-link" href="{{ url_for('orders') }}">← My orders</a>
+<div class="page-heading"><span class="eyebrow">ORDER CONFIRMED</span><h1>Order #{{ order.id }}</h1><p>Thanks for choosing QuickBite. Keep this page open for updates.</p></div>
+<div class="checkout-layout"><section class="panel"><h2>Delivery progress</h2><div class="progress-list" id="progress-list" data-status="{{ order.status_index }}" data-order="{{ order.id }}">
+{% for stage in stages %}<div class="progress-step {% if loop.index0 <= order.status_index %}complete{% endif %}"><span class="progress-dot">{{ '✓' if loop.index0 <= order.status_index else loop.index }}</span><div><strong>{{ stage }}</strong>{% if loop.index0 == order.status_index %}<p class="muted">Current status</p>{% endif %}</div></div>{% endfor %}
+</div><p class="small muted" id="tracking-note">Status updates are managed by the demo admin. GPS driver tracking is not enabled.</p></section>
+<aside class="panel summary"><h2>Order summary</h2>{% for item in items %}<div class="bill-row"><span>{{ item.name }} × {{ item.qty }}</span><span>₹{{ item.price * item.qty }}</span></div>{% endfor %}<div class="bill-row bill-total"><span>Total</span><span>₹{{ order.total }}</span></div><p><strong>Payment:</strong> {{ 'Cash on delivery' if order.payment_method == 'cod' else 'Simulated test payment' }}</p><p><strong>Payment status:</strong> {{ order.payment_status }}</p><p><strong>Delivery address:</strong><br>{{ order.address }}</p><a class="btn btn-outline full" href="{{ url_for('orders') }}">View all orders</a></aside></div>
+{% endblock %}

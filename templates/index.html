@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Discover food{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="hero-copy">
+    <span class="eyebrow">YOUR NEXT BITE IS HERE</span>
+    <h1>Cravings? <span>Consider it done.</span></h1>
+    <p>Discover local favourites, order your comfort food, and make today delicious.</p>
+    <form action="{{ url_for('index') }}" method="get" class="hero-search">
+      <input name="q" placeholder="Try biryani, pizza, burgers..." value="{{ query }}">
+      <button class="btn" type="submit">Find food</button>
+    </form>
+    <div class="hero-points"><span>✓ Easy ordering</span><span>✓ Clear prices</span><span>✓ Order updates</span></div>
+  </div>
+  <div class="hero-art"><div class="hero-orbit"></div><img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=900" alt="Freshly made pizza"><div class="floating-note">Made for your cravings ✨</div></div>
+</section>
+<section class="section-head"><div><span class="eyebrow">MADE FOR YOUR MOOD</span><h2>{% if query %}Search results{% else %}Popular near you{% endif %}</h2></div><span class="muted">{{ restaurants|length }} restaurants</span></section>
+<div class="restaurant-grid">
+  {% for r in restaurants %}
+  <a class="restaurant-card" href="{{ url_for('restaurant', restaurant_id=r.id) }}">
+    <div class="restaurant-image"><img src="{{ r.image }}" alt="{{ r.name }}" loading="lazy"><span class="offer-tag">QuickBite pick</span></div>
+    <div class="restaurant-info"><div class="restaurant-title"><h3>{{ r.name }}</h3><span class="rating">★ {{ r.rating }}</span></div><p>{{ r.cuisine }}</p><div class="card-meta"><span>◷ {{ r.time }}</span><span>₹{{ r.fee }} delivery</span></div></div>
+  </a>
+  {% else %}
+  <div class="empty-state"><h3>No matches yet</h3><p>Try a different restaurant name or cuisine.</p><a class="btn" href="{{ url_for('index') }}">Clear search</a></div>
+  {% endfor %}
+</div>
+<section class="promo-strip"><div><span class="eyebrow">A LITTLE MORE DELICIOUS</span><h2>Your favourites, just a few clicks away.</h2><p>Browse the menu, add your picks, and keep track of every order.</p></div><a class="btn btn-light" href="{{ url_for('index') }}">Explore restaurants →</a></section>
+{% endblock %}
